@@ -1,0 +1,25 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../classic-theme.html">
+
+<dom-module id="oh-song">
+  <template>
+    <style include="classic-theme">
+      :host {
+        display: block;
+        height: 20vh;
+      }
+    </style>
+    <div>[[songId]]</div>
+  </template>
+  <script>
+    Polymer({
+      is: 'oh-song',
+      properties: {
+        songId: {
+          type: String
+        }
+      }
+    });
+  </script>
+</dom-module>

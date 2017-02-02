@@ -12,6 +12,7 @@
 <link rel="import" href="../../bower_components/paper-fab-speed-dial/paper-fab-speed-dial-action.html">
 
 <link rel="import" href="../classic-theme.html">
+<link rel="import" href="../oh-song/oh-song.html">
 
 <dom-module id="oh-app">
   <template>
@@ -23,7 +24,13 @@
         height: 90vh;
       }
     </style>
-    <nebula-storage data="{{songsDb}}" auto-load></nebula-storage>
+    <nebula-storage
+      key="OHSongsDb"
+      data="{{songsDb}}"
+      default-value="[[_getEmptyArr()]]"
+      auto-load
+      auto-save>
+    </nebula-storage>
     <app-drawer-layout fullbleed>
       <app-drawer>
         <app-toolbar>Hinários e Listas</app-toolbar>
@@ -46,9 +53,7 @@
         </app-header>
 
         <iron-list items="[[songsDb]]">
-          <template>
-            <div>[[item.title]]</div>
-          </template>
+          <template><oh-song song-id="[[item.songId]]"></oh-song></template>
         </iron-list>
       </app-header-layout>
 
@@ -81,6 +86,9 @@
             return ["Todas as músicas"];
           }
         }
+      },
+      _getEmptyArr() {
+        return [];
       }
     });
   </script>
