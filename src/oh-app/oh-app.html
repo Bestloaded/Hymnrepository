@@ -1,10 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
+<link rel="import" href="../../bower_components/nebula-storage/nebula-storage.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-fab-speed-dial/paper-fab-speed-dial.html">
+<link rel="import" href="../../bower_components/paper-fab-speed-dial/paper-fab-speed-dial-action.html">
 
 <link rel="import" href="../classic-theme.html">
 
@@ -14,8 +19,12 @@
       :host {
         display: block;
       }
+      iron-list {
+        height: 90vh;
+      }
     </style>
-    <app-drawer-layout>
+    <nebula-storage data="{{songsDb}}" auto-load></nebula-storage>
+    <app-drawer-layout fullbleed>
       <app-drawer>
         <app-toolbar>Hinários e Listas</app-toolbar>
 
@@ -35,17 +44,32 @@
             <paper-icon-button icon="search"></paper-icon-button>
           </app-toolbar>
         </app-header>
+
+        <iron-list items="[[songsDb]]">
+          <template>
+            <div>[[item.title]]</div>
+          </template>
+        </iron-list>
       </app-header-layout>
 
-      <div>Content</div>
+      <paper-fab-speed-dial>
+        <paper-fab-speed-dial-action icon="move-to-inbox">
+          Importar
+        </paper-fab-speed-dial-action>
+        <paper-fab-speed-dial-action icon="create-new-folder">
+          Novo Hinário / Lista
+        </paper-fab-speed-dial-action>
+        <paper-fab-speed-dial-action icon="create">
+          Adicionar Hino
+        </paper-fab-speed-dial-action>
+      </paper-fab-speed-dial>
+
     </app-drawer-layout>
   </template>
 
   <script>
     Polymer({
-
       is: 'oh-app',
-
       properties: {
         selectedMenu: {
           type: String,
