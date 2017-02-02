@@ -1,0 +1,7 @@
+{
+  "name": "OpenHymns",
+  "short_name": "OpenHymns",
+  "description": "An app of Hymns Lyrics for worship groups and churches in general, works with OpenLP songs.",
+  "start_url": "/",
+  "display": "standalone"
+}
