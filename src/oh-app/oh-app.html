@@ -1,18 +1,30 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../classic-theme.html">
 
 <dom-module id="oh-app">
   <template>
-    <style>
+    <style include="classic-theme">
       :host {
         display: block;
       }
     </style>
     <app-drawer-layout>
       <app-drawer>
-        <app-toolbar>Hinários/Listas<app-toolbar>
+        <app-toolbar>Hinários e Listas</app-toolbar>
+
+        <!-- Navigation -->
+        <paper-menu selected="{{selectedMenu}}" attr-for-selected="name">
+          <template is="dom-repeat" items="{{menuItems}}">
+            <paper-item name="{{item}}">{{item}}</paper-item>
+          </template>
+        </paper-menu>
       </app-drawer>
 
       <app-header-layout>
@@ -35,12 +47,17 @@
       is: 'oh-app',
 
       properties: {
-        prop1: {
+        selectedMenu: {
           type: String,
-          value: 'oh-app',
+          value: "Todas as músicas"
         },
-      },
-
+        menuItems: {
+          type: Array,
+          value: function() {
+            return ["Todas as músicas"];
+          }
+        }
+      }
     });
   </script>
 </dom-module>
