@@ -20,7 +20,7 @@
         <app-toolbar>Hinários e Listas</app-toolbar>
 
         <!-- Navigation -->
-        <paper-menu selected="{{selectedMenu}}" attr-for-selected="name">
+        <paper-menu selected="{{selectedMenu}}" attr-for-selected="name" role="menu">
           <template is="dom-repeat" items="{{menuItems}}">
             <paper-item name="{{item}}">{{item}}</paper-item>
           </template>

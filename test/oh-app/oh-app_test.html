@@ -20,9 +20,19 @@
 
     <script>
       suite('oh-app', function() {
+        var element;
+
+        setup(function() {
+          element = fixture('basic');
+        });
+
         test('instantiating the element works', function() {
-          var element = fixture('basic');
           assert.equal(element.is, 'oh-app');
+        });
+
+        test('should have one menu item and that must be selected', function() {
+          assert.lengthOf(element.menuItems, 1);
+          assert.equal(element.selectedMenu, element.menuItems[0]);
         });
       });
     </script>
