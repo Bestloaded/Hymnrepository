@@ -20,10 +20,11 @@
 
     <script>
       suite('oh-app', function() {
-        var element;
+        var element, songsDbStore;
 
         setup(function() {
           element = fixture('basic');
+          songsDbStore = element.querySelector('nebula-storage');
         });
 
         test('instantiating the element works', function() {
@@ -34,6 +35,27 @@
           assert.lengthOf(element.menuItems, 1);
           assert.equal(element.selectedMenu, element.menuItems[0]);
         });
+
+        test('songsDb should be empty after first time load', function(done) {
+          var song = {'songId': 'hf2uhfsiud'};
+          songsDbStore.addEventListener('load', function() {
+            assert.lengthOf(element.songsDb, 0);
+            done();
+          });
+        });
+
+        test('songsDb update should reflect in oh-song number of elements', function(done) {
+          var song = {songId: 'poop'};
+          element.set('songsDb', [song]);
+
+          flush(function(){
+            assert.lengthOf(element.querySelectorAll('oh-song'), 1);
+            assert.equal(element.querySelector('oh-song').songId, song.songId);
+            done();
+          });
+        });
+
+        
       });
     </script>
   </body>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>oh-song test</title>
+
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/oh-song/oh-song.html">
+  </head>
+  <body>
+    <test-fixture id="basic">
+      <template>
+        <oh-song></oh-song>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('oh-song', function() {
+        var element;
+
+        setup(function() {
+          element = fixture('basic');
+        });
+
+        test('instantiating the element works', function() {
+          assert.equal(element.is, 'oh-song');
+        });
+      });
+    </script>
+  </body>
+</html>

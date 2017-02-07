@@ -53,7 +53,9 @@
         </app-header>
 
         <iron-list items="[[songsDb]]">
-          <template><oh-song song-id="[[item.songId]]"></oh-song></template>
+          <template>
+            <oh-song song-id="[[item.songId]]"></oh-song>
+          </template>
         </iron-list>
       </app-header-layout>
 
