@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<song xmlns="http://openlyrics.info/namespace/2009/song" version="0.8" createdIn="OpenLP 2.2.1" modifiedIn="OpenLP 2.2.1" modifiedDate="2017-01-22T22:40:42">
+  <properties>
+    <titles>
+      <title> CC 002 - JUSTO ÉS, SENHOR</title>
+    </titles>
+    <authors>
+      <author>CANTOR CRISTÃO</author>
+    </authors>
+  </properties>
+  <lyrics>
+    <verse name="v1a">
+      <lines>JUSTO ÉS,  SENHOR, <br/>NOS TEUS SANTOS CAMINHOS;<br/>ÉS  DIGNO EM TODAS  <br/>AS TUAS OBRAS;<br/>EIS, PERTO ESTÁS <br/>DE TODOS QUE TE INVOCAM, <br/>DE TODOS QUE TE INVOCAM EM<br/>VERDADE!<br/>ALELUIA! ALELUIA!</lines>
+    </verse>
+    <verse name="v2">
+      <lines/>
+    </verse>
+    <verse name="v1b">
+      <lines>JUSTO ÉS,  SENHOR, <br/>NOS TEUS SANTOS CAMINHOS;<br/>ÉS  DIGNO EM TODAS  <br/>AS TUAS OBRAS;<br/>EIS, PERTO ESTÁS <br/>DE TODOS QUE TE INVOCAM, <br/>DE TODOS QUE TE INVOCAM EM<br/>VERDADE!<br/>ALELUIA! ALELUIA!!!</lines>
+    </verse>
+  </lyrics>
+</song>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<song xmlns="http://openlyrics.info/namespace/2009/song" version="0.8" createdIn="OpenLP 2.2.1" modifiedIn="OpenLP 2.2.1" modifiedDate="2017-01-15T21:52:33">
+  <properties>
+    <titles>
+      <title> CC 001 - ANTÍFONA</title>
+    </titles>
+    <authors>
+      <author>CANTOR CRISTÃO</author>
+    </authors>
+  </properties>
+  <lyrics>
+    <verse name="v1">
+      <lines>A TI, Ó DEUS, FIEL E BOM<br/>SENHOR, ETERNO PAI, <br/>SUPREMO BENFEITOR,<br/>NÓS OS TEUS SERVOS, <br/>VIMOS DAR LOUVOR,<br/>ALELUIA! ALELUIA!</lines>
+    </verse>
+    <verse name="v2">
+      <lines>A TI, DEUS FILHO,<br/>SALVADOR JESUS,<br/>DA GRAÇA A FONTE,<br/>DA VERDADE A LUZ;<br/>POR TEU AMOR,<br/>MEDIDO PELA CRUZ,<br/>ALELUIA! ALELUIA!</lines>
+    </verse>
+    <verse name="v3">
+      <lines>A TI, Ó DEUS,<br/>REAL CONSOLADOR,<br/>DIVINO FOGO<br/>SANTIFICADOR<br/>QUE NOS ANIMA E NOS <br/>ACENDE O AMOR,<br/>ALELUIA! ALELUIA!</lines>
+    </verse>
+    <verse name="v4">
+      <lines>A TI, DEUS TRINO,<br/>PODEROSO DEUS,<br/>QUE ESTÁS PRESENTE<br/>SEMPRE JUNTO AOS TEUS<br/>A MINISTRAR AS BÊNÇÃOS<br/>LÁ DOS CÉUS,<br/>ALELUIA! ALELUIA!!!</lines>
+    </verse>
+  </lyrics>
+</song>
