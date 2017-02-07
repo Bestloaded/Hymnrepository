@@ -13,6 +13,7 @@
 
 <link rel="import" href="../classic-theme.html">
 <link rel="import" href="../oh-song/oh-song.html">
+<link rel="import" href="../oh-openlp-parser/oh-openlp-parser.html">
 
 <dom-module id="oh-app">
   <template>
@@ -24,13 +25,20 @@
         height: 90vh;
       }
     </style>
+
+    <!-- Storage -->
     <nebula-storage
-      key="OHSongsDb"
-      data="{{songsDb}}"
+      key="OHSongsIndex"
+      data="{{songsIndex}}"
       default-value="[[_getEmptyArr()]]"
       auto-load
       auto-save>
     </nebula-storage>
+
+    <!-- Parsers -->
+    <oh-openlp-parser id="openlpParser"></oh-openlp-parser>
+
+    <!-- Layout -->
     <app-drawer-layout fullbleed>
       <app-drawer>
         <app-toolbar>Hinários e Listas</app-toolbar>
@@ -52,15 +60,18 @@
           </app-toolbar>
         </app-header>
 
-        <iron-list items="[[songsDb]]">
+        <iron-list items="[[songsIndex]]" id="listIndex">
           <template>
-            <oh-song song-id="[[item.songId]]"></oh-song>
+            <oh-song song-index="[[item]]"></oh-song>
           </template>
         </iron-list>
       </app-header-layout>
 
-      <paper-fab-speed-dial>
-        <paper-fab-speed-dial-action icon="move-to-inbox">
+      <!-- FAB --->
+      <paper-fab-speed-dial id="fab">
+        <paper-fab-speed-dial-action
+          on-tap="_import"
+          icon="move-to-inbox">
           Importar
         </paper-fab-speed-dial-action>
         <paper-fab-speed-dial-action icon="create-new-folder">
@@ -89,8 +100,29 @@
           }
         }
       },
-      _getEmptyArr() {
+      listeners: {
+        "openlpParser.song-changed": "_addSong"
+      },
+      _getEmptyArr: function() {
         return [];
+      },
+      _addSong: function(evt) {
+        var song = evt.detail.value;
+        var songIndex;
+        song.id = this._getUID();
+        songIndex = {songId: song.id, songTitle: song.title};
+        this.push('songsIndex', songIndex);
+        this.$.listIndex.scrollToItem(songIndex);
+      },
+      _getUID: function() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+          return v.toString(16);
+        });
+      },
+      _import: function() {
+        this.$.openlpParser.parse("assets/CC 001 - ANTÍFONA (CANTOR CRISTÃO).xml");
+        this.$.fab.close();
       }
     });
   </script>

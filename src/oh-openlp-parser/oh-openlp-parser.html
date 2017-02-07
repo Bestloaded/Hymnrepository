@@ -1,0 +1,78 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../classic-theme.html">
+
+<dom-module id="oh-openlp-parser">
+  <template>
+    <style include="classic-theme">
+      :host {
+        display: block;
+        height: 20vh;
+      }
+    </style>
+  </template>
+  <script>
+    Polymer({
+      is: 'oh-openlp-parser',
+      properties: {
+        url: {
+          type: String,
+          observer: 'parse'
+        },
+        song: {
+          type: Object,
+          notify: true
+        }
+      },
+      listeners: {
+        "xml-request-loaded": "_parseXMLRequest"
+      },
+      parse: function(url) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+          this.fire('xml-request-loaded', xhr);
+        }.bind(this);
+
+        xhr.onerror = function() {
+          this.fire('xml-request-error', xhr);
+        }.bind(this);
+
+        xhr.open("GET", url);
+        xhr.responseType = "document";
+        xhr.send();
+      },
+      _parseXMLRequest: function(xhr) {
+        var doc = xhr.detail.responseXML;
+        var song = {};
+        song.title = this._queryDom(doc, 'properties title');
+        song.author = this._queryDom(doc, 'properties author');
+        song.verses = this._getSongVerses(doc);
+        this.set('song', song);
+      },
+      _queryDom: function(doc, selector) {
+        var el = doc.querySelector(selector);
+        if(!el) {
+          this.fire('parse-error', new Error(
+            'selector '
+              + selector
+              + 'not found on the document'
+          ));
+          return;
+        }
+
+        return el.textContent;
+      },
+      _getSongVerses: function(doc) {
+        var versesDOM = doc.querySelectorAll('lyrics verse');
+        return Array.prototype.map.call(versesDOM, function(verse) {
+          var linesDOM = verse.querySelector('lines');
+          var lines = [];
+          linesDOM.childNodes.forEach(function(node) {
+            if(node.nodeValue) lines.push(node.nodeValue);
+          });
+          return lines;
+        });
+      }
+    });
+  </script>
+</dom-module>

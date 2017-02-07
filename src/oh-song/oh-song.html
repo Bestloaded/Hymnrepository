@@ -10,14 +10,17 @@
         height: 20vh;
       }
     </style>
-    <div>[[songId]]</div>
+    <div>
+      [[songIndex.songId]],
+      [[songIndex.songTitle]]
+    </div>
   </template>
   <script>
     Polymer({
       is: 'oh-song',
       properties: {
-        songId: {
-          type: String
+        songIndex: {
+          type: Object
         }
       }
     });
