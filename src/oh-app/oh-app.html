@@ -109,8 +109,7 @@
       _addSong: function(evt) {
         var song = evt.detail.value;
         var songIndex;
-        song.id = this._getUID();
-        songIndex = {songId: song.id, songTitle: song.title};
+        songIndex = {songId: this._getUID(), songTitle: song.title};
         this.push('songsIndex', songIndex);
         this.$.listIndex.scrollToItem(songIndex);
       },

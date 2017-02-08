@@ -1,62 +1,85 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>oh-app test</title>
+  <title>oh-app test</title>
 
-    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../../web-component-tester/browser.js"></script>
+  <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../../src/oh-app/oh-app.html">
-  </head>
-  <body>
-    <test-fixture id="basic">
-      <template>
-        <oh-app></oh-app>
-      </template>
-    </test-fixture>
+  <link rel="import" href="../../src/oh-app/oh-app.html">
+</head>
+<body>
+  <test-fixture id="basic">
+    <template>
+      <oh-app></oh-app>
+    </template>
+  </test-fixture>
 
-    <script>
-      suite('oh-app', function() {
-        var element, songsDbStore;
+  <script>
+  suite('oh-app', function() {
+    var element, songsDbStore;
 
-        setup(function() {
-          element = fixture('basic');
-          songsDbStore = element.querySelector('nebula-storage');
-        });
+    setup(function() {
+      element = fixture('basic');
+      songsDbStore = element.querySelector('nebula-storage');
+    });
 
-        test('instantiating the element works', function() {
-          assert.equal(element.is, 'oh-app');
-        });
+    test('instantiating the element works', function() {
+      assert.equal(element.is, 'oh-app');
+    });
 
-        test('should have one menu item and that must be selected', function() {
-          assert.lengthOf(element.menuItems, 1);
-          assert.equal(element.selectedMenu, element.menuItems[0]);
-        });
-
-        test('songsDb should be empty after first time load', function(done) {
-          var song = {'songId': 'hf2uhfsiud'};
-          songsDbStore.addEventListener('load', function() {
-            assert.lengthOf(element.songsDb, 0);
-            done();
-          });
-        });
-
-        test('songsDb update should reflect in oh-song number of elements', function(done) {
-          var song = {songId: 'poop'};
-          element.set('songsDb', [song]);
-
-          flush(function(){
-            assert.lengthOf(element.querySelectorAll('oh-song'), 1);
-            assert.equal(element.querySelector('oh-song').songId, song.songId);
-            done();
-          });
-        });
-
-        
+    test('listeners should be correctly seted', function() {
+      assert.deepEqual(element.listeners, {
+        'openlpParser.song-changed': '_addSong'
       });
-    </script>
-  </body>
+    });
+
+    test('should have one menu item and that must be selected', function() {
+      assert.lengthOf(element.menuItems, 1);
+      assert.equal(element.selectedMenu, element.menuItems[0]);
+    });
+
+    test('songsIndex should be empty after first time load', function(done) {
+      var song = {'songId': 'hf2uhfsiud'};
+      songsDbStore.addEventListener('load', function() {
+        assert.lengthOf(element.songsIndex, 0);
+        done();
+      });
+    });
+
+    test('songsIndex update should reflect in oh-song number of elements', function(done) {
+      var song = {songId: 'poop'};
+      element.set('songsIndex', [song]);
+
+      flush(function(){
+        assert.lengthOf(element.querySelectorAll('oh-song'), 1);
+        assert.deepEqual(element.querySelector('oh-song').songIndex, song);
+        done();
+      });
+    });
+
+    test('_getUID should return a valid rfc UID', function() {
+      assert.match(element._getUID(), /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+    });
+
+    test('_addSong should add a song to songsIndex', function(done) {
+      songsDbStore.addEventListener('load', function() {
+        var song = {
+          title: 'poop'
+        };
+        var myEvt = new CustomEvent('song-changed', {
+          detail: {value: song}
+        });
+        element._addSong(myEvt);
+        var songIndex = element.songsIndex.pop();
+        assert.equal(songIndex.songTitle, song.title);
+        done();
+      });
+    });
+  });
+  </script>
+</body>
 </html>
