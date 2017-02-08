@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>oh-openlp-parser test</title>
+
+  <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../../src/oh-openlp-parser/oh-openlp-parser.html">
+</head>
+<body>
+  <test-fixture id="basic">
+    <template>
+      <oh-openlp-parser></oh-openlp-parser>
+    </template>
+  </test-fixture>
+
+  <script>
+  suite('oh-openlp-parser', function() {
+    var element;
+
+    setup(function() {
+      element = fixture('basic');
+    });
+
+    test('instantiating the element works', function() {
+      assert.equal(element.is, 'oh-openlp-parser');
+    });
+
+    test('listeners should be correctly seted', function() {
+      assert.deepEqual(element.listeners, {
+        'xml-response-loaded': '_parseXMLRequest'
+      });
+    });
+    suite('tests with fake server', function() {
+      var server;
+
+      setup(function() {
+        server = sinon.fakeServer.create();
+      });
+
+      teardown(function() {
+        server.restore();
+      });
+
+      test('parse function should request url', function(done) {
+        var url = 'poop';
+        server.respondWith((req) => {
+          assert.equal(req.url, url);
+          done();
+        });
+        element.parse(url);
+        server.respond();
+      });
+
+      test('parse function should fire xml-response-loaded', function(done) {
+        element.addEventListener('xml-response-loaded', (evt) => {
+          assert.equal(evt.detail.url, 'poop');
+          done();
+        });
+        element.parse('poop');
+        server.respondWith([200, {}, ""]);
+        server.respond();
+      });
+
+      test('parse function should fire xml-response-error', function(done) {
+        element.addEventListener('xml-response-error', (evt) => {
+          assert.equal(evt.detail.url, 'poop');
+          done();
+        });
+        element.parse('poop');
+        server.respondWith([404, {}, ""]);
+        server.respond();
+      });
+
+      test('parse function should fire xml-response-error', function(done) {
+        element.addEventListener('xml-response-error', (evt) => {
+          assert.equal(evt.detail.url, 'poop');
+          done();
+        });
+        element.parse('poop');
+        server.respondWith([404, {}, ""]);
+        server.respond();
+      });
+
+      test.skip('parse function should fire xml-network-error');
+    });
+    test.skip('_queryDom should fire an parse-error');
+    test.skip('_queryDom should return textContent of a document');
+    test.skip('_getSongVerses should return verses of a document');
+    test.skip('_parseXMLRequest should fire parsing-response-error without responseXML');
+    test.skip('_parseXMLRequest should set a song');
+  });
+  </script>
+</body>
+</html>

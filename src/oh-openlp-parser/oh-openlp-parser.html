@@ -25,16 +25,21 @@
         }
       },
       listeners: {
-        "xml-request-loaded": "_parseXMLRequest"
+        "xml-response-loaded": "_parseXMLRequest"
       },
       parse: function(url) {
         var xhr = new XMLHttpRequest();
+
         xhr.onload = function() {
-          this.fire('xml-request-loaded', xhr);
+          if(xhr.status === 200) {
+            this.fire('xml-response-loaded', xhr);
+          } else {
+            this.fire('xml-response-error', xhr);
+          }
         }.bind(this);
 
         xhr.onerror = function() {
-          this.fire('xml-request-error', xhr);
+          this.fire('xml-network-error', xhr);
         }.bind(this);
 
         xhr.open("GET", url);
@@ -43,6 +48,10 @@
       },
       _parseXMLRequest: function(xhr) {
         var doc = xhr.detail.responseXML;
+        if(!doc) {
+          this.fire('parsing-response-error', new Error('missing responseXML'));
+          return;
+        }
         var song = {};
         song.title = this._queryDom(doc, 'properties title');
         song.author = this._queryDom(doc, 'properties author');
