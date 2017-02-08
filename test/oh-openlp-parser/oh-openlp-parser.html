@@ -88,11 +88,76 @@
 
       test.skip('parse function should fire xml-network-error');
     });
-    test.skip('_queryDom should fire an parse-error');
-    test.skip('_queryDom should return textContent of a document');
-    test.skip('_getSongVerses should return verses of a document');
-    test.skip('_parseXMLRequest should fire parsing-response-error without responseXML');
-    test.skip('_parseXMLRequest should set a song');
+
+    test('_queryDom should fire a parse-error', function(done) {
+      element.addEventListener('parse-error', function(evt) {
+        assert.equal(evt.detail.message, 'selector poop not found on the document');
+        done();
+      });
+      element._queryDom(document, 'poop');
+    });
+
+    test('_queryDom should return textContent of an element', function() {
+      var myDom = document.createElement('poop');
+      document.body.append(myDom);
+      myDom.innerHTML = 'text';
+      assert.equal(
+        myDom.textContent,
+        element._queryDom(document, 'poop')
+      );
+      document.body.removeChild(myDom);
+    });
+
+    test('_getSongVerses should return verses of an element', function() {
+      var lyrics = document.createElement('lyrics');
+      lyrics.innerHTML += '<verse><lines>Text0-0<br>Text0-1<br></lines></verse>';
+      lyrics.innerHTML += '<verse><lines>Text1-0<br>Text1-1<br></lines></verse>';
+      document.body.append(lyrics);
+      var verses = element._getSongVerses(document);
+      assert.deepEqual(verses, [
+        ['Text0-0', 'Text0-1'],
+        ['Text1-0', 'Text1-1']
+      ]);
+      document.body.removeChild(lyrics);
+    });
+
+    test('_parseXMLRequest should fire parsing-response-error without responseXML', function(done) {
+      element.addEventListener('parsing-response-error', (evt) => {
+        assert.equal(evt.detail.message, 'missing responseXML');
+        done();
+      });
+      element._parseXMLRequest({detail: {}});
+    });
+
+    suite('test with xml assets', function() {
+      var xhr;
+      var xmlAsset;
+
+      setup(function(done){
+        xhr = new XMLHttpRequest();
+
+        xhr.onload = function() {
+          if (xhr.status !== 200) throw Error('error loading asset');
+          xmlAsset = xhr.responseXML;
+          done();
+        };
+
+        xhr.open("GET", '../../assets/CC 001 - ANTÍFONA (CANTOR CRISTÃO).xml');
+        xhr.responseType = "document";
+        xhr.send();
+      });
+
+      test('_parseXMLRequest should set a song', function() {
+        element._parseXMLRequest(new CustomEvent('xml-response-loaded', {detail: xhr}));
+        assert.equal(element.song.title, ' CC 001 - ANTÍFONA');
+        assert.equal(element.song.author, 'CANTOR CRISTÃO');
+        assert.lengthOf(element.song.verses, 4);
+        assert.lengthOf(element.song.verses[0], 6);
+        assert.lengthOf(element.song.verses[1], 7);
+        assert.lengthOf(element.song.verses[2], 7);
+        assert.lengthOf(element.song.verses[3], 7);
+      });
+    });
   });
   </script>
 </body>
