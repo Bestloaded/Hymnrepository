@@ -68,7 +68,8 @@
     test('_addSong should add a song to songsIndex', function(done) {
       songsDbStore.addEventListener('load', function() {
         var song = {
-          title: 'poop'
+          title: 'poop',
+          author: 'poop author'
         };
         var myEvt = new CustomEvent('song-changed', {
           detail: {value: song}

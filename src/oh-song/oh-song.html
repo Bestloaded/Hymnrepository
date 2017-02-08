@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
 
 <link rel="import" href="../classic-theme.html">
 
@@ -7,13 +9,23 @@
     <style include="classic-theme">
       :host {
         display: block;
-        height: 20vh;
+      }
+      paper-item {
+        cursor: pointer;
+      }
+
+      paper-item-body {
+        --paper-item-body-secondary: {
+          @apply(--oh-song-author);
+        }
       }
     </style>
-    <div>
-      [[songIndex.songId]],
-      [[songIndex.songTitle]]
-    </div>
+    <paper-item>
+      <paper-item-body two-line>
+        <div>[[songIndex.songTitle]]</div>
+        <div secondary>[[songIndex.songAuthor]]</div>
+      </paper-item-body>
+    </paper-item>
   </template>
   <script>
     Polymer({
