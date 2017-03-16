@@ -50,13 +50,13 @@
       });
     });
 
-    test('songsIndex update should reflect in oh-song number of elements', function(done) {
+    test('songsIndex update should reflect in oh-song-list songsIndex property', function(done) {
       var song = {songId: 'poop'};
       element.set('songsIndex', [song]);
 
       flush(function(){
-        assert.lengthOf(element.querySelectorAll('oh-song'), 1);
-        assert.deepEqual(element.querySelector('oh-song').songIndex, song);
+        assert.lengthOf(element.querySelector('oh-song-list').songsIndex, 1);
+        assert.deepEqual(element.querySelector('oh-song-list').songsIndex[0], song);
         done();
       });
     });
