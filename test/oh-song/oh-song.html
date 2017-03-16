@@ -29,6 +29,24 @@
         test('instantiating the element works', function() {
           assert.equal(element.is, 'oh-song');
         });
+
+        test('should render song title and author', function(done) {
+          var song = element.song = {
+            songTitle: 'Poop',
+            songAuthor: 'Pooper'
+          }
+          flush(function() {
+            assert.equal(
+              element.querySelector('div:nth-child(1)').textContent,
+              song.songTitle
+            );
+            assert.equal(
+              element.querySelector('div:nth-child(2)').textContent,
+              song.songAuthor
+            );  
+            done();
+          })
+        });
       });
     </script>
   </body>
