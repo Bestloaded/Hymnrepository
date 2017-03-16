@@ -42,21 +42,21 @@
       assert.equal(element.selectedMenu, element.menuItems[0]);
     });
 
-    test('songsIndex should be empty after first time load', function(done) {
+    test('songs should be empty after first time load', function(done) {
       var song = {'songId': 'hf2uhfsiud'};
       songsDbStore.addEventListener('load', function() {
-        assert.lengthOf(element.songsIndex, 0);
+        assert.lengthOf(element.songs, 0);
         done();
       });
     });
 
-    test('songsIndex update should reflect in oh-song-list songsIndex property', function(done) {
+    test('songs update should reflect in oh-song-list songs property', function(done) {
       var song = {songId: 'poop'};
-      element.set('songsIndex', [song]);
+      element.set('songs', [song]);
 
       flush(function(){
-        assert.lengthOf(element.querySelector('oh-song-list').songsIndex, 1);
-        assert.deepEqual(element.querySelector('oh-song-list').songsIndex[0], song);
+        assert.lengthOf(element.querySelector('oh-song-list').songs, 1);
+        assert.deepEqual(element.querySelector('oh-song-list').songs[0], song);
         done();
       });
     });
@@ -65,7 +65,7 @@
       assert.match(element._getUID(), /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     });
 
-    test('_addSong should add a song to songsIndex', function(done) {
+    test('_addSong should add a song to songs', function(done) {
       songsDbStore.addEventListener('load', function() {
         var song = {
           title: 'poop',
@@ -75,7 +75,7 @@
           detail: {value: song}
         });
         element._addSong(myEvt);
-        var songIndex = element.songsIndex.pop();
+        var songIndex = element.songs.pop();
         assert.equal(songIndex.songTitle, song.title);
         done();
       });

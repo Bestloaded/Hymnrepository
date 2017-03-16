@@ -4,7 +4,6 @@
 <link rel="import" href="../../bower_components/nebula-storage/nebula-storage.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
@@ -12,7 +11,7 @@
 <link rel="import" href="../../bower_components/paper-fab-speed-dial/paper-fab-speed-dial-action.html">
 
 <link rel="import" href="../classic-theme.html">
-<link rel="import" href="../oh-song/oh-song.html">
+<link rel="import" href="../oh-song-list/oh-song-list.html">
 <link rel="import" href="../oh-openlp-parser/oh-openlp-parser.html">
 
 <dom-module id="oh-app">
@@ -29,7 +28,7 @@
     <!-- Storage -->
     <nebula-storage
       key="OHSongsIndex"
-      data="{{songsIndex}}"
+      data="{{songs}}"
       default-value="[[_getEmptyArr()]]"
       auto-load
       auto-save>
@@ -55,16 +54,12 @@
         <app-header reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div main-title>Todas as músicas</div>
+            <div main-title>[[selectedMenu]]</div>
             <paper-icon-button icon="search"></paper-icon-button>
           </app-toolbar>
         </app-header>
 
-        <iron-list items="[[songsIndex]]" id="listIndex">
-          <template>
-            <oh-song song-index="[[item]]"></oh-song>
-          </template>
-        </iron-list>
+        <oh-song-list songs="[[songs]]"></oh-song-list>
       </app-header-layout>
 
       <!-- FAB --->
@@ -107,15 +102,14 @@
         return [];
       },
       _addSong: function(evt) {
-        var song = evt.detail.value;
-        var songIndex;
-        songIndex = {
+        var songDetail = evt.detail.value;
+        var song = {
           songId: this._getUID(),
-          songTitle: song.title,
-          songAuthor: song.author
+          songTitle: songDetail.title,
+          songAuthor: songDetail.author
         };
-        this.push('songsIndex', songIndex);
-        this.$.listIndex.scrollToItem(songIndex);
+        this.push('songs', song);
+        // In future we also should push to the bigger songDetailsDB
       },
       _getUID: function() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {

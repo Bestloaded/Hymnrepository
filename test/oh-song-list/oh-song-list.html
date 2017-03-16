@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>oh-song-list test</title>
+
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/oh-song-list/oh-song-list.html">
+  </head>
+  <body>
+    <test-fixture id="basic">
+      <template>
+        <oh-song-list></oh-song-list>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('oh-song-list', function() {
+        var element;
+
+        setup(function() {
+          element = fixture('basic');
+        });
+
+        test('instantiating the element works', function() {
+          assert.equal(element.is, 'oh-song-list');
+        });
+
+        test('should add an oh-song element when songs is updated', function(done) {
+          var song = {songId: 'poop'};
+          element.songs = [song];
+          flush(function() {
+            assert.lengthOf(element.querySelectorAll('oh-song'), 1);
+            assert.deepEqual(element.querySelector('oh-song').song, song);
+            done();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

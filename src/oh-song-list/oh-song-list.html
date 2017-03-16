@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="../classic-theme.html">
+<link rel="import" href="../oh-song/oh-song.html">
+
+<dom-module id="oh-song-list">
+  <template>
+    <style include="classic-theme">
+      :host {
+        display: block;
+      }
+    </style>
+    <!--
+    Demo of iron-list animation https://github.com/PolymerElements/neon-animation/blob/master/demo/list/list-demo.html
+    -->
+    <iron-list items="[[songs]]" id="listIndex">
+      <template>
+        <oh-song song="[[item]]"></oh-song>
+      </template>
+    </iron-list>
+  </template>
+  <script>
+    Polymer({
+      is: 'oh-song-list',
+      properties: {
+        songs: Array
+      }
+    });
+  </script>
+</dom-module>
