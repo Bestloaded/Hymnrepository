@@ -21,8 +21,8 @@
     </style>
     <paper-item on-tap="open">
       <paper-item-body two-line>
-        <div>[[songIndex.songTitle]]</div>
-        <div secondary>[[songIndex.songAuthor]]</div>
+        <div>[[song.songTitle]]</div>
+        <div secondary>[[song.songAuthor]]</div>
       </paper-item-body>
     </paper-item>
   </template>
@@ -30,7 +30,7 @@
     Polymer({
       is: 'oh-song',
       properties: {
-        songIndex: {
+        song: {
           type: Object
         }
       },
