@@ -10,6 +10,10 @@
       :host {
         display: block;
       }
+      iron-list {
+        overflow: auto;
+        height: 100%;
+      }
     </style>
     <!--
     Demo of iron-list animation https://github.com/PolymerElements/neon-animation/blob/master/demo/list/list-demo.html
@@ -24,7 +28,22 @@
     Polymer({
       is: 'oh-song-list',
       properties: {
-        songs: Array
+        songs: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        }
+      },
+      observers: [
+        '_songsChanged(songs.splices)'
+      ],
+      _songsChanged: function(changeRecord) {
+        if(!changeRecord) return;
+        var changes = changeRecord.indexSplices;
+
+        // Scroll to the first changed item
+        this.$.listIndex.scrollToIndex(changes[0].index);
       }
     });
   </script>
