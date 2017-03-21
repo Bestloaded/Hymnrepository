@@ -43,7 +43,7 @@
 
     <!-- Layout -->
     <app-drawer-layout fullbleed>
-      <app-drawer>
+      <app-drawer id="drawer">
         <app-toolbar>Hinários e Listas</app-toolbar>
 
         <!-- Navigation -->
@@ -57,13 +57,13 @@
       <app-header-layout>
         <app-header fixed>
           <app-toolbar>
-            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div main-title>[[selectedMenu]]</div>
+            <paper-icon-button on-tap="_iconTap" icon="[[_getIcon(openedSong)]]"></paper-icon-button>
+            <div main-title>[[_getToolbarTitle(selectedMenu, openedSong)]]</div>
             <paper-icon-button icon="search"></paper-icon-button>
           </app-toolbar>
         </app-header>
 
-        <oh-song-list songs="[[songs]]"></oh-song-list>
+        <oh-song-list songs="[[songs]]" id="list"></oh-song-list>
       </app-header-layout>
 
       <!-- FAB --->
@@ -104,13 +104,40 @@
           value: function() {
             return [];
           }
+        },
+        openedSong: {
+          type: Object,
+          notify: true,
+          value: null
         }
       },
       listeners: {
-        "openlpParser.song-changed": "_addSong"
+        "openlpParser.song-changed": "_addSong",
+        "list.song-open": "_songOpened"
       },
-      _getEmptyArr: function() {
-        return [];
+      _iconTap: function(evt) {
+        if(evt.target.icon === "arrow-back") {
+          this.openedSong.close();
+          this.openedSong = null;
+          return;
+        }
+
+        if(evt.target.icon === "menu") {
+          this.$.drawer.toggle();
+          return;
+        }
+      },
+      _getToolbarTitle: function() {
+        if(this.openedSong) {
+          return this.openedSong.song.songTitle;
+        }
+        return this.selectedMenu;
+      },
+      _songOpened: function(evt) {
+        this.openedSong = evt.target;
+      },
+      _getIcon: function(openedSong){
+        return openedSong?"arrow-back":"menu";
       },
       _getEmptyObj: function() {
         return {};

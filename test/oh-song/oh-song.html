@@ -43,10 +43,25 @@
             assert.equal(
               element.querySelector('div:nth-child(2)').textContent,
               song.songAuthor
-            );  
+            );
             done();
           })
         });
+
+        test('should fetch songDetail when song is seted', function() {
+          var song = element.song = {
+            songId: 'poop-song-id',
+            songTitle: 'Poop',
+            songAuthor: 'Pooper'
+          };
+
+          assert.deepEqual(element.songDetail, {
+            title: song.songTitle,
+            author: song.songAuthor
+          });
+        });
+
+        test.skip('should expand element when clicked');
       });
     </script>
   </body>

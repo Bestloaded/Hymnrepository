@@ -38,7 +38,8 @@
 
     test('listeners should be correctly seted', function() {
       assert.deepEqual(element.listeners, {
-        'openlpParser.song-changed': '_addSong'
+        'openlpParser.song-changed': '_addSong',
+        'list.song-open': '_songOpened'
       });
     });
 
@@ -93,6 +94,61 @@
       assert.equal(addedSongDetail.title, song.title);
       assert.equal(addedSongDetail.author, song.author);
     });
+
+    test('should have a hamburguer menu', function() {
+      assert.equal(element.querySelector('app-toolbar paper-icon-button').icon, "menu");
+    });
+
+    test('should open drawer when click hamburguer menu', function(done) {
+      var handler = function() {
+        assert.isTrue(element.$.drawer.opened);
+        element.$.drawer.removeEventListener('opened-changed', handler);
+        done();
+      };
+      element.$.drawer.addEventListener('opened-changed', handler);
+      element.querySelector('app-toolbar paper-icon-button').fire('tap');
+    });
+
+    test('should set toolbar title and icon when openedSong is set', function() {
+      var song = {
+        songTitle: 'poop',
+        songAuthor: 'poop author',
+        songId: 'poop-song-id'
+      }
+
+      element.openedSong = {song: song};
+      assert.equal(element.querySelector('app-toolbar paper-icon-button').icon, "arrow-back");
+      assert.equal(element.querySelector('app-toolbar div[main-title]').textContent, song.songTitle);
+    });
+
+    test('_songOpened should set openedSong', function() {
+      var fakeElement = document.createElement('fake-element');
+      fakeElement.song = {};
+      var fakeEvent = new CustomEvent("song-open", {defail: fakeElement.song});
+      fakeElement.addEventListener("song-open", element._songOpened.bind(element));
+      fakeElement.dispatchEvent(fakeEvent);
+      assert.equal(element.openedSong, fakeElement);
+      assert.equal(element.openedSong.song, fakeElement.song);
+    });
+
+    test('tap on the a arrow-back icon should close openedSong element', function() {
+      var fakeElement = document.createElement('fake-element');
+      fakeElement.song = {};
+      fakeElement.close = sinon.spy();
+      element.openedSong = fakeElement;
+      element.querySelector('app-toolbar paper-icon-button').fire('tap');
+      sinon.assert.calledOnce(fakeElement.close);
+      assert.isNull(element.openedSong);
+    });
+
+    test('tap on the arrow-back icon should change toolbar title', function() {
+      var fakeElement = document.createElement('fake-element');
+      fakeElement.song = {};
+      fakeElement.close = sinon.spy();
+      element.openedSong = fakeElement;
+      element.querySelector('app-toolbar paper-icon-button').fire('tap');
+      assert.equal(element.querySelector('app-toolbar div[main-title]').textContent, element.selectedMenu);
+    })
   });
   </script>
 </body>
