@@ -1,9 +1,9 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../classic-theme.html">
 
-<dom-module id="oh-song">
+</head><body><dom-module id="oh-song">
   <template>
     <style include="classic-theme">
       :host {
@@ -20,20 +20,12 @@
       }
     </style>
     <paper-item on-tap="open">
-      <paper-item-body two-line>
+      <paper-item-body two-line="">
         <div>[[song.songTitle]]</div>
-        <div secondary>[[song.songAuthor]]</div>
+        <div secondary="">[[song.songAuthor]]</div>
       </paper-item-body>
     </paper-item>
   </template>
-  <script>
-    Polymer({
-      is: 'oh-song',
-      properties: {
-        song: {
-          type: Object
-        }
-      }
-    });
-  </script>
+  <script>Polymer({is:"oh-song",properties:{song:{type:Object}}});</script>
 </dom-module>
+</body></html>

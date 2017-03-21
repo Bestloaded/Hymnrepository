@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
@@ -14,7 +14,7 @@
 <link rel="import" href="../oh-song-list/oh-song-list.html">
 <link rel="import" href="../oh-openlp-parser/oh-openlp-parser.html">
 
-<dom-module id="oh-app">
+</head><body><dom-module id="oh-app">
   <template>
     <style include="classic-theme">
       :host {
@@ -25,28 +25,23 @@
       }
     </style>
 
-    <!-- Songs Storage -->
-    <app-localstorage-document
-      id="songsStorage"
-      key="songsDB"
-      data="{{songs}}">
+    
+    <app-localstorage-document id="songsStorage" key="songsDB" data="{{songs}}">
     </app-localstorage-document>
 
-    <!-- Songs Detail Storage -->
-    <app-localstorage-document
-      id="songsDetailStorage"
-      zero-value="[[_getEmptyObj()]]">
+    
+    <app-localstorage-document id="songsDetailStorage" zero-value="[[_getEmptyObj()]]">
     </app-localstorage-document>
 
-    <!-- Parsers -->
+    
     <oh-openlp-parser id="openlpParser"></oh-openlp-parser>
 
-    <!-- Layout -->
-    <app-drawer-layout fullbleed>
+    
+    <app-drawer-layout fullbleed="">
       <app-drawer id="drawer">
         <app-toolbar>Hinários e Listas</app-toolbar>
 
-        <!-- Navigation -->
+        
         <paper-menu selected="{{selectedMenu}}" attr-for-selected="name" role="menu">
           <template is="dom-repeat" items="{{menuItems}}">
             <paper-item name="{{item}}">{{item}}</paper-item>
@@ -55,10 +50,10 @@
       </app-drawer>
 
       <app-header-layout>
-        <app-header fixed>
+        <app-header fixed="">
           <app-toolbar>
             <paper-icon-button on-tap="_iconTap" icon="[[_getIcon(openedSong)]]"></paper-icon-button>
-            <div main-title>[[_getToolbarTitle(selectedMenu, openedSong)]]</div>
+            <div main-title="">[[_getToolbarTitle(selectedMenu, openedSong)]]</div>
             <paper-icon-button icon="search"></paper-icon-button>
           </app-toolbar>
         </app-header>
@@ -66,11 +61,9 @@
         <oh-song-list songs="[[songs]]" id="list"></oh-song-list>
       </app-header-layout>
 
-      <!-- FAB --->
+      
       <paper-fab-speed-dial id="fab">
-        <paper-fab-speed-dial-action
-          on-tap="_import"
-          icon="move-to-inbox">
+        <paper-fab-speed-dial-action on-tap="_import" icon="move-to-inbox">
           Importar
         </paper-fab-speed-dial-action>
         <paper-fab-speed-dial-action icon="create-new-folder">
@@ -84,85 +77,6 @@
     </app-drawer-layout>
   </template>
 
-  <script>
-    Polymer({
-      is: 'oh-app',
-      properties: {
-        selectedMenu: {
-          type: String,
-          value: "Todas as músicas"
-        },
-        menuItems: {
-          type: Array,
-          value: function() {
-            return ["Todas as músicas"];
-          }
-        },
-        songs: {
-          type: Array,
-          notify: true,
-          value: function() {
-            return [];
-          }
-        },
-        openedSong: {
-          type: Object,
-          notify: true,
-          value: null
-        }
-      },
-      listeners: {
-        "openlpParser.song-changed": "_addSong",
-        "list.song-open": "_songOpened"
-      },
-      _iconTap: function(evt) {
-        if(evt.target.icon === "arrow-back") {
-          this.openedSong.close();
-          this.openedSong = null;
-          return;
-        }
-
-        if(evt.target.icon === "menu") {
-          this.$.drawer.toggle();
-          return;
-        }
-      },
-      _getToolbarTitle: function() {
-        if(this.openedSong) {
-          return this.openedSong.song.songTitle;
-        }
-        return this.selectedMenu;
-      },
-      _songOpened: function(evt) {
-        this.openedSong = evt.target;
-      },
-      _getIcon: function(openedSong){
-        return openedSong?"arrow-back":"menu";
-      },
-      _getEmptyObj: function() {
-        return {};
-      },
-      _addSong: function(evt) {
-        var songDetail = evt.detail.value;
-        var song = {
-          songId: this._getUID(),
-          songTitle: songDetail.title,
-          songAuthor: songDetail.author
-        };
-        this.push('songs', song);
-        this.$.songsDetailStorage.key = song.songId;
-        this.$.songsDetailStorage.data = songDetail;
-      },
-      _getUID: function() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-          var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-          return v.toString(16);
-        });
-      },
-      _import: function() {
-        this.$.openlpParser.parse("assets/CC 001 - ANTÍFONA (CANTOR CRISTÃO).xml");
-        this.$.fab.close();
-      }
-    });
-  </script>
+  <script>Polymer({is:"oh-app",properties:{selectedMenu:{type:String,value:"Todas as músicas"},menuItems:{type:Array,value:function(){return["Todas as músicas"]}},songs:{type:Array,notify:!0,value:function(){return[]}},openedSong:{type:Object,notify:!0,value:null}},listeners:{"openlpParser.song-changed":"_addSong","list.song-open":"_songOpened"},_iconTap:function(e){return"arrow-back"===e.target.icon?(this.openedSong.close(),void(this.openedSong=null)):"menu"===e.target.icon?void this.$.drawer.toggle():void 0},_getToolbarTitle:function(){return this.openedSong?this.openedSong.song.songTitle:this.selectedMenu},_songOpened:function(e){this.openedSong=e.target},_getIcon:function(e){return e?"arrow-back":"menu"},_getEmptyObj:function(){return{}},_addSong:function(e){var n=e.detail.value,t={songId:this._getUID(),songTitle:n.title,songAuthor:n.author};this.push("songs",t),this.$.songsDetailStorage.key=t.songId,this.$.songsDetailStorage.data=n},_getUID:function(){return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(e){var n=16*Math.random()|0;return("x"==e?n:3&n|8).toString(16)})},_import:function(){this.$.openlpParser.parse("assets/CC 001 - ANTÍFONA (CANTOR CRISTÃO).xml"),this.$.fab.close()}});</script>
 </dom-module>
+</body></html>

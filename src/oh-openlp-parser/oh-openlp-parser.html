@@ -1,8 +1,8 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../classic-theme.html">
 
-<dom-module id="oh-openlp-parser">
+</head><body><dom-module id="oh-openlp-parser">
   <template>
     <style include="classic-theme">
       :host {
@@ -10,77 +10,6 @@
       }
     </style>
   </template>
-  <script>
-    Polymer({
-      is: 'oh-openlp-parser',
-      properties: {
-        url: {
-          type: String,
-          observer: 'parse'
-        },
-        song: {
-          type: Object,
-          notify: true
-        }
-      },
-      listeners: {
-        "xml-response-loaded": "_parseXMLRequest"
-      },
-      parse: function(url) {
-        var xhr = new XMLHttpRequest();
-
-        xhr.onload = function() {
-          if(xhr.status === 200) {
-            this.fire('xml-response-loaded', xhr);
-          } else {
-            this.fire('xml-response-error', xhr);
-          }
-        }.bind(this);
-
-        xhr.onerror = function() {
-          this.fire('xml-network-error', xhr);
-        }.bind(this);
-
-        xhr.open("GET", url);
-        xhr.responseType = "document";
-        xhr.send();
-      },
-      _parseXMLRequest: function(xhr) {
-        var doc = xhr.detail.responseXML;
-        if(!doc) {
-          this.fire('parsing-response-error', new Error('missing responseXML'));
-          return;
-        }
-        var song = {};
-        song.title = this._queryDom(doc, 'properties title');
-        song.author = this._queryDom(doc, 'properties author');
-        song.verses = this._getSongVerses(doc);
-        this.set('song', song);
-      },
-      _queryDom: function(doc, selector) {
-        var el = doc.querySelector(selector);
-        if(!el) {
-          this.fire('parse-error', new Error(
-            'selector '
-              + selector
-              + ' not found on the document'
-          ));
-          return;
-        }
-
-        return el.textContent;
-      },
-      _getSongVerses: function(doc) {
-        var versesDOM = doc.querySelectorAll('lyrics verse');
-        return Array.prototype.map.call(versesDOM, function(verse) {
-          var linesDOM = verse.querySelector('lines');
-          var lines = [];
-          linesDOM.childNodes.forEach(function(node) {
-            if(node.nodeValue) lines.push(node.nodeValue);
-          });
-          return lines;
-        });
-      }
-    });
-  </script>
+  <script>Polymer({is:"oh-openlp-parser",properties:{url:{type:String,observer:"parse"},song:{type:Object,notify:!0}},listeners:{"xml-response-loaded":"_parseXMLRequest"},parse:function(e){var r=new XMLHttpRequest;r.onload=function(){200===r.status?this.fire("xml-response-loaded",r):this.fire("xml-response-error",r)}.bind(this),r.onerror=function(){this.fire("xml-network-error",r)}.bind(this),r.open("GET",e),r.responseType="document",r.send()},_parseXMLRequest:function(e){var r=e.detail.responseXML;if(!r)return void this.fire("parsing-response-error",new Error("missing responseXML"));var o={};o.title=this._queryDom(r,"properties title"),o.author=this._queryDom(r,"properties author"),o.verses=this._getSongVerses(r),this.set("song",o)},_queryDom:function(e,r){var o=e.querySelector(r);return o?o.textContent:void this.fire("parse-error",new Error("selector "+r+" not found on the document"))},_getSongVerses:function(e){var r=e.querySelectorAll("lyrics verse");return Array.prototype.map.call(r,function(e){var r=e.querySelector("lines"),o=[];return r.childNodes.forEach(function(e){e.nodeValue&&o.push(e.nodeValue)}),o})}});</script>
 </dom-module>
+</body></html>

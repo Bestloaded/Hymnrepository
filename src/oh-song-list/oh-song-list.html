@@ -1,10 +1,10 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<html><head><link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 
 <link rel="import" href="../classic-theme.html">
 <link rel="import" href="../oh-song/oh-song.html">
 
-<dom-module id="oh-song-list">
+</head><body><dom-module id="oh-song-list">
   <template>
     <style include="classic-theme">
       :host {
@@ -15,36 +15,13 @@
         height: 100%;
       }
     </style>
-    <!--
-    Demo of iron-list animation https://github.com/PolymerElements/neon-animation/blob/master/demo/list/list-demo.html
-    -->
+    
     <iron-list items="[[songs]]" id="listIndex">
       <template>
         <oh-song song="[[item]]"></oh-song>
       </template>
     </iron-list>
   </template>
-  <script>
-    Polymer({
-      is: 'oh-song-list',
-      properties: {
-        songs: {
-          type: Array,
-          value: function() {
-            return [];
-          }
-        }
-      },
-      observers: [
-        '_songsChanged(songs.splices)'
-      ],
-      _songsChanged: function(changeRecord) {
-        if(!changeRecord) return;
-        var changes = changeRecord.indexSplices;
-
-        // Scroll to the first changed item
-        this.$.listIndex.scrollToIndex(changes[0].index);
-      }
-    });
-  </script>
+  <script>Polymer({is:"oh-song-list",properties:{songs:{type:Array,value:function(){return[]}}},observers:["_songsChanged(songs.splices)"],_songsChanged:function(s){if(s){var e=s.indexSplices;this.$.listIndex.scrollToIndex(e[0].index)}}});</script>
 </dom-module>
+</body></html>
