@@ -21,7 +21,7 @@
         display: block;
       }
       oh-song-list {
-        height: 90vh;
+        height: calc(100vh - 64px);
       }
     </style>
 
@@ -55,7 +55,7 @@
       </app-drawer>
 
       <app-header-layout>
-        <app-header reveals effects="waterfall">
+        <app-header fixed>
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div main-title>[[selectedMenu]]</div>
