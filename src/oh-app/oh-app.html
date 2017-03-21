@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
-<link rel="import" href="../../bower_components/nebula-storage/nebula-storage.html">
+<link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -25,14 +25,18 @@
       }
     </style>
 
-    <!-- Storage -->
-    <nebula-storage
-      key="OHSongsIndex"
-      data="{{songs}}"
-      default-value="[[_getEmptyArr()]]"
-      auto-load
-      auto-save>
-    </nebula-storage>
+    <!-- Songs Storage -->
+    <app-localstorage-document
+      id="songsStorage"
+      key="songsDB"
+      data="{{songs}}">
+    </app-localstorage-document>
+
+    <!-- Songs Detail Storage -->
+    <app-localstorage-document
+      id="songsDetailStorage"
+      zero-value="[[_getEmptyObj()]]">
+    </app-localstorage-document>
 
     <!-- Parsers -->
     <oh-openlp-parser id="openlpParser"></oh-openlp-parser>
@@ -93,6 +97,13 @@
           value: function() {
             return ["Todas as músicas"];
           }
+        },
+        songs: {
+          type: Array,
+          notify: true,
+          value: function() {
+            return [];
+          }
         }
       },
       listeners: {
@@ -100,6 +111,9 @@
       },
       _getEmptyArr: function() {
         return [];
+      },
+      _getEmptyObj: function() {
+        return {};
       },
       _addSong: function(evt) {
         var songDetail = evt.detail.value;
@@ -109,7 +123,8 @@
           songAuthor: songDetail.author
         };
         this.push('songs', song);
-        // In future we also should push to the bigger songDetailsDB
+        this.$.songsDetailStorage.key = song.songId;
+        this.$.songsDetailStorage.data = songDetail;
       },
       _getUID: function() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
