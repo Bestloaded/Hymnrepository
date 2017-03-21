@@ -5,8 +5,5 @@
     "assets/**/*",
     "bower.json",
     "manifest.json"
-  ],
-  "includeDependencies": [
-    "bower_components/**/*"
   ]
 }
